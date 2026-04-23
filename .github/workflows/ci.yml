@@ -2,7 +2,8 @@ name: CI MLflow
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   run-mlflow:
@@ -23,4 +24,5 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          mlflow run MLProject
+          cd MLProject
+          mlflow run .
