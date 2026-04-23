@@ -1,5 +1,7 @@
 name: mlflow-env
-
+run: |
+  cd MLProject
+  mlflow run .
 channels:
   - conda-forge
 
