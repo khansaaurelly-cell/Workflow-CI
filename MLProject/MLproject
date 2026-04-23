@@ -1,4 +1,4 @@
-name: titanic-mlflow
+name: Titanic Model Training
 
 entry_points:
   main:
