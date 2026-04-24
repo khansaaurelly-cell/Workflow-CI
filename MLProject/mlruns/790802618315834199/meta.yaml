@@ -1,0 +1,6 @@
+artifact_location: file:c:/Users/Administrator/Downloads/Workflow-CI/MLProject/mlruns/790802618315834199
+creation_time: 1776990977333
+experiment_id: '790802618315834199'
+last_update_time: 1776990977333
+lifecycle_stage: active
+name: titanic_model

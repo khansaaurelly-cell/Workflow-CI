@@ -7,17 +7,23 @@ import mlflow.sklearn
 import os
 import numpy as np
 
+# DEBUG
+print("CURRENT DIR:", os.getcwd())
+print("FILES:", os.listdir())
+
+
+os.chdir(os.path.dirname(__file__))
+print("FIXED DIR:", os.getcwd())
+
 # =========================
 # LOAD DATA
 # =========================
-
-
-file_path = os.path.join(os.path.dirname(__file__), "titanic_preprocessing.csv")
+file_path = "titanic_preprocessing.csv"
 df = pd.read_csv(file_path)
 
 for col in df.select_dtypes(include=[np.number]).columns:
     df[col] = df[col].astype(float)
-    
+
 # =========================
 # SPLIT DATA
 # =========================
@@ -31,16 +37,16 @@ X_train, X_test, y_train, y_test = train_test_split(
 # =========================
 # SET MLFLOW
 # =========================
-mlflow.set_tracking_uri("file:./mlruns")
+os.chdir(os.path.dirname(__file__))
+mlflow.set_tracking_uri("./mlruns")
 mlflow.set_experiment("titanic_model")
 
+mlflow.autolog()
+
 # =========================
-# TRAINING MODE
+# TRAINING
 # =========================
 with mlflow.start_run():
-
-
-    mlflow.autolog()
 
     model = RandomForestClassifier(
         n_estimators=200,
@@ -50,18 +56,14 @@ with mlflow.start_run():
 
     model.fit(X_train, y_train)
 
-    # =========================
-    # EVALUASI MODEL
-    # =========================
     y_pred = model.predict(X_test)
 
     acc = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred)
-    rec = recall_score(y_test, y_pred)
+    prec = precision_score(y_test, y_pred, zero_division=0)
+    rec = recall_score(y_test, y_pred, zero_division=0)
 
     print("Accuracy:", acc)
 
-    # =========================
-    #  TAMBAHAN LOGGING
-    # =========================
     mlflow.log_metric("accuracy_manual", acc)
+    mlflow.log_metric("precision", prec)
+    mlflow.log_metric("recall", rec)

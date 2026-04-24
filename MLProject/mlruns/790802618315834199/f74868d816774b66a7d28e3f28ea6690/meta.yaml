@@ -1,0 +1,15 @@
+artifact_uri: file:c:/Users/Administrator/Downloads/Workflow-CI/MLProject/mlruns/790802618315834199/f74868d816774b66a7d28e3f28ea6690/artifacts
+end_time: 1776991002509
+entry_point_name: ''
+experiment_id: '790802618315834199'
+lifecycle_stage: active
+run_id: f74868d816774b66a7d28e3f28ea6690
+run_name: carefree-carp-319
+run_uuid: f74868d816774b66a7d28e3f28ea6690
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776990981432
+status: 3
+tags: []
+user_id: Administrator
