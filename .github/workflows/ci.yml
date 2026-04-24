@@ -18,16 +18,15 @@ jobs:
         with:
           auto-activate-base: true
           python-version: "3.10"
+          activate-environment: base
 
       - name: Install dependencies
+        shell: bash -l {0}
         run: |
           pip install mlflow
 
-      - name: Fix conda activate
-        run: |
-          echo "source /usr/share/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
-
       - name: Run MLflow Project
+        shell: bash -l {0}
         run: |
           cd MLProject
           mlflow run .
