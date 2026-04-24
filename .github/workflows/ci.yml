@@ -13,14 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: '3.10'
+          auto-activate-base: true
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install mlflow pandas scikit-learn
+          pip install mlflow
+
+      - name: Fix conda activate
+        run: |
+          echo "source /usr/share/miniconda/etc/profile.d/conda.sh" >> ~/.bashrc
 
       - name: Run MLflow Project
         run: |
