@@ -7,13 +7,13 @@ import mlflow.sklearn
 import os
 import numpy as np
 
-# DEBUG
+# =========================
+# FIX WORKING DIRECTORY
+# =========================
+os.chdir(os.path.dirname(__file__))
+
 print("CURRENT DIR:", os.getcwd())
 print("FILES:", os.listdir())
-
-
-os.chdir(os.path.dirname(__file__))
-print("FIXED DIR:", os.getcwd())
 
 # =========================
 # LOAD DATA
@@ -21,6 +21,7 @@ print("FIXED DIR:", os.getcwd())
 file_path = "titanic_preprocessing.csv"
 df = pd.read_csv(file_path)
 
+# pastikan semua numerik
 for col in df.select_dtypes(include=[np.number]).columns:
     df[col] = df[col].astype(float)
 
@@ -37,33 +38,35 @@ X_train, X_test, y_train, y_test = train_test_split(
 # =========================
 # SET MLFLOW
 # =========================
-os.chdir(os.path.dirname(__file__))
 mlflow.set_tracking_uri("./mlruns")
-mlflow.set_experiment("titanic_model")
 
 mlflow.autolog()
 
 # =========================
-# TRAINING
+# TRAIN MODEL
 # =========================
-with mlflow.start_run():
+model = RandomForestClassifier(
+    n_estimators=200,
+    max_depth=5,
+    random_state=42
+)
 
-    model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=5,
-        random_state=42
-    )
+model.fit(X_train, y_train)
 
-    model.fit(X_train, y_train)
+# =========================
+# EVALUASI
+# =========================
+y_pred = model.predict(X_test)
 
-    y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+prec = precision_score(y_test, y_pred)
+rec = recall_score(y_test, y_pred)
 
-    acc = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred, zero_division=0)
-    rec = recall_score(y_test, y_pred, zero_division=0)
+print("Accuracy:", acc)
 
-    print("Accuracy:", acc)
-
-    mlflow.log_metric("accuracy_manual", acc)
-    mlflow.log_metric("precision", prec)
-    mlflow.log_metric("recall", rec)
+# =========================
+# LOG TAMBAHAN
+# =========================
+mlflow.log_metric("accuracy_manual", acc)
+mlflow.log_metric("precision_manual", prec)
+mlflow.log_metric("recall_manual", rec)
