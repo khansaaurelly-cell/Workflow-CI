@@ -1,4 +1,4 @@
-nname: CI MLflow
+name: CI MLflow
 
 on:
   push:
